@@ -235,7 +235,9 @@ Client-side response injection can prove UI and navigation capabilities. Offerin
 
 ## Reproducibility and validation status
 
-The project currently includes credential-safe analyzers, narrowly scoped interception helpers, start/stop wrappers with rollback behavior, and focused unit tests. The complete local test suite passes:
+The repository includes the credential-safe experiment modules used to test the main hypotheses and focused unit tests built entirely from synthetic fixtures. It intentionally excludes raw captures, authentication material, certificate files, copied vendor binaries, machine state, and personal environment data.
+
+The complete test suite passes:
 
 ```text
 Ran 39 tests
@@ -243,3 +245,16 @@ OK
 ```
 
 The live conclusions are supported by controlled A/B comparisons, successful baseline streaming, exact server responses, and agreement between runtime behavior and static request construction. Negative static searches are treated as bounded evidence rather than proof of absence. Raw capture files are intentionally not suitable for publication because they may contain authorization material; only sanitized summaries and analyzers should be shared.
+
+### Running the tests
+
+Python 3.13 is the validated version.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements-dev.txt
+$env:PYTHONPATH = "experiments"
+.\.venv\Scripts\python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+The experiment modules are provided to document exact test boundaries and make the findings reviewable. They are not a supported product or an authorization bypass. Do not run live interception experiments against accounts, devices, or traffic you do not own or have permission to test.
